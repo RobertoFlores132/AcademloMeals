@@ -5,7 +5,9 @@ const { catchAsync } = require('../utils/catchAsync.util');
 const { AppError } = require('../utils/appError.util');
 
 const getAllRestaurants = catchAsync(async (req, res, next) => {
-    const restaurants = await Restaurant.findAll();
+    const restaurants = await Restaurant.findAll({
+        include: [{ model:Review, attributes: [ id, comment, rating ] }]
+    });
 
     res.status(200).json({
         status: 'success',

@@ -19,8 +19,11 @@ Review.belongsTo(User);
 User.hasMany(Order, {foreignKey: 'userId'})
 Order.belongsTo(User);
 
-Meal.hasOne(Order, {foreignKey: 'mealId'})
-Order.belongsTo(Meal);
+Order.hasOne(Meal, {foreignKey: 'mealId'})
+Meal.belongsTo(Order);
+
+Restaurant.hasMany(Order, {foreignKey: 'restaurantId'})
+Order.belongsTo(Restaurant)
 
 Restaurant.hasMany(Review, {foreignKey: 'restaurantId'})
 Review.belongsTo(Restaurant);

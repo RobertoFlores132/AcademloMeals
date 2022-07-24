@@ -3,6 +3,8 @@ const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
 
 const { User } = require('../models/user.model');
+const { Order } = require('../models/order.model');
+const { Meal } = require('../models/meal.model');
 
 const { catchAsync } = require('../utils/catchAsync.util');
 const { AppError } = require('../utils/appError.util');
@@ -81,9 +83,38 @@ const deleteUser = catchAsync(async (req, res, next) => {
     res.status(204).json({ status: 'success' });
 });
 
+const getAllOrders = catchAsync(async (req, res, next) => {
+    const orders =  Order.findAll({
+        include: [{model: User, attributes: [ id, name, status]},
+        {
+            model: Meal,
+            attributes: [ name, price ],
+        }
+    ]
+    });
+
+    res.status(200).json({
+        status: 'success',
+        orders
+    });
+});
+
+const getOrderbyId = catchAsync(async (req, res, next) => {
+    const { order } = req;
+
+    res.status(200).json({
+        status: 'success',
+        order
+    });
+});
+
+
+
 module.exports = {
     createUser,
     login,
     updateUser,
-    deleteUser
+    deleteUser,
+    getAllOrders,
+    getOrderbyId
 };

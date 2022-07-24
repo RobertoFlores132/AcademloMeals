@@ -1,10 +1,13 @@
 const { Order } = require('../models/order.model');
+const { Restaurant } = require('../models/restaurant.model');
 
 const { catchAsync } = require('../utils/catchAsync.util');
 const { AppError } = require('../utils/appError.util');
 
 const getAllOrders = catchAsync(async (req, res, next) => {
-    const orders = Order.findAll();
+    const orders = Order.findAll({
+        include: [{ model: Restaurant, attributes: [ id, name, address, rating ] }]
+    });
     
     res.status(200).json({
         status: 'success',

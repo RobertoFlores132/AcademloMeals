@@ -1,10 +1,13 @@
 const { Meal } = require('../models/meal.model');
+const { Restaurant } = require('../models/restaurant.model');
 
 const { catchAsync } = require('../utils/catchAsync.util');
 const { AppError } = require('../utils/appError.util');
 
 const getAllMeals = catchAsync(async (req, res, next) => {
-    const meals = Meal.findAll();
+    const meals = Meal.findAll({
+        include: [{ model: Restaurant, attributes: [ id, name, address, ratings ]}]
+    });
 
     res.status(200).json({
         status: 'success',

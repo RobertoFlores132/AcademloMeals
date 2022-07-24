@@ -4,7 +4,9 @@ const {
     createUser,
     login,
     updateUser,
-    deleteUser
+    deleteUser,
+    getAllOrders,
+    getOrderbyId
 } = require('../controllers/users.controller');
 
 const { createUserValidators } = require('../middlewares/validators.middleware');
@@ -18,9 +20,13 @@ usersRouter.post('/', createUserValidators, createUser);
 usersRouter.post('/login', login);
 
 usersRouter
-    .use('./:id', userExists)
-    .route('./:id')
+    .use('/:id', userExists)
+    .route('/:id')
     .patch(protectUserAccount, updateUser)
     .delete(protectUserAccount, deleteUser)
+
+usersRouter.get('/order', protectSession, getAllOrders);
+
+usersRouter.get('/order/:id', protectSession, getOrderbyId);
 
 module.exports = { usersRouter };
